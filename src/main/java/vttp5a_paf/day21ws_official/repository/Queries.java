@@ -6,4 +6,9 @@ public class Queries {
                 limit ?
                 offset ?;
             """;
+
+    public static String SQL_GET_CUSTOMER_BY_ID = """
+            select * from customers
+	            where id = ?;
+            """;
 }

@@ -1,6 +1,7 @@
 package vttp5a_paf.day21ws_official.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,18 @@ public class CustomerService {
                 .build();
 
         return jObject;
+    }
+
+    public JsonObject getCustomerById(int customer_id){
+        Optional<Customer> opt = customerRepository.getCustomerById(customer_id);
+
+        if(opt.isEmpty()) {
+            JsonObject error = Json.createObjectBuilder()
+                    .add("error", "The customer id specified does not exist!")
+                    .build();
+            return error;
+        } else {
+            return Customer.toJson(opt.get());
+        }
     }
 }
