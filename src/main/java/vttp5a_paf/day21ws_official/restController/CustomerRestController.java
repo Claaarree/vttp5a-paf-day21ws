@@ -35,4 +35,15 @@ public class CustomerRestController {
             return ResponseEntity.status(200).body(jObject.toString());
         }
     }
+
+    @GetMapping(path = "/customer/{customer_id}/orders", produces = "application/json")
+    public ResponseEntity<String> getCustomerOrders(@PathVariable int customer_id) {
+        JsonObject jObject = customerService.getCustomerOrders(customer_id);
+        try {
+            jObject.getString("error");
+            return ResponseEntity.status(404).body(jObject.toString());
+        } catch (Exception e) {
+            return ResponseEntity.status(200).body(jObject.toString());
+        }
+    }
 }

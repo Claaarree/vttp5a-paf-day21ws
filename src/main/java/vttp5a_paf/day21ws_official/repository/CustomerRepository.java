@@ -10,6 +10,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import vttp5a_paf.day21ws_official.model.Customer;
+import vttp5a_paf.day21ws_official.model.Order;
 
 @Repository
 public class CustomerRepository {
@@ -36,6 +37,20 @@ public class CustomerRepository {
             return Optional.empty();
         } else {
             return Optional.of(Customer.toCustomer(rs));
+        }
+    }
+
+    public Optional<List<Order>> getCutomerOrders(int customer_id) {
+        Optional<Customer> opt = getCustomerById(customer_id);
+        if (opt.isEmpty()){
+            return Optional.empty();
+        } else {
+            List<Order> ordersList = new ArrayList<>();
+            SqlRowSet rs = template.queryForRowSet(Queries.SQL_GET_CUSTOMER_ORDERS, customer_id);
+            while (rs.next()){
+                ordersList.add(Order.toOrder(rs));
+            }
+            return Optional.of(ordersList);
         }
     }
 }

@@ -10,6 +10,7 @@ import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import vttp5a_paf.day21ws_official.model.Customer;
+import vttp5a_paf.day21ws_official.model.Order;
 import vttp5a_paf.day21ws_official.repository.CustomerRepository;
 
 @Service
@@ -43,6 +44,28 @@ public class CustomerService {
             return error;
         } else {
             return Customer.toJson(opt.get());
+        }
+    }
+
+    public JsonObject getCustomerOrders(int customer_id) {
+        Optional<List<Order>> opt = customerRepository.getCutomerOrders(customer_id);
+
+        if (opt.isEmpty()) {
+            JsonObject error = Json.createObjectBuilder()
+                    .add("error", "The customer id specified does not exist!")
+                    .build();
+            return error;
+        } else {
+            JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+            List<Order> ordersList = opt.get();
+            for (Order o : ordersList){
+                jsonArrayBuilder.add(Order.toJson(o));
+            }
+            JsonObject jsonObject = Json.createObjectBuilder()
+                    .add("orders", jsonArrayBuilder.build())
+                    .build();
+
+            return jsonObject;
         }
     }
 }

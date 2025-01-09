@@ -11,4 +11,9 @@ public class Queries {
             select * from customers
 	            where id = ?;
             """;
+
+    public static String SQL_GET_CUSTOMER_ORDERS = """
+            select * from orders
+	            where customer_id = ?;
+            """;
 }
