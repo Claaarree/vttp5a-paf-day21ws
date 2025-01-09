@@ -2,6 +2,9 @@ package vttp5a_paf.day21ws_official.model;
 
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+
 public class Customer {
     private Integer customerId;
     private String company;
@@ -56,7 +59,7 @@ public class Customer {
 
     public static Customer toCustomer(SqlRowSet rs) {
         Customer c = new Customer();
-        
+
         c.setCustomerId(rs.getInt("id"));
         c.setCompany(rs.getString("company"));
         c.setLastName(rs.getString("last_name"));
@@ -66,6 +69,20 @@ public class Customer {
         c.setCity(rs.getString("city"));
 
         return c;
+    }
+
+    public static JsonObject toJson(Customer c) {
+        JsonObject jObject = Json.createObjectBuilder()
+                .add("customer_id", c.getCustomerId())
+                .add("company", c.getCompany())
+                .add("last_name", c.getLastName())
+                .add("first_name", c.getFirstName())
+                .add("job_title", c.getJobTitle())
+                .add("address", c.getAddress())
+                .add("city", c.getCity())
+                .build();
+
+        return jObject;
     }
 
 }
